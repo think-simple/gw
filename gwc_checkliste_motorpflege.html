@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Motorpflege – VW Polo & VW Tiguan Allspace</title>
+<meta name="theme-color" content="#003366">
+<style>
+  :root { color-scheme: light dark; }
+  body {
+    font-family: Arial, sans-serif;
+    background: #f2f6fc;
+    color: #111827;
+    margin: 0;
+    padding: 12px 12px 40px 12px;
+  }
+  h1 {
+    color:#003366;
+    font-size:22px;
+    text-align:center;
+    margin: 6px 0 10px 0;
+  }
+  h2 {
+    font-size:17px;
+    margin-top:18px;
+    margin-bottom:6px;
+    color:#0055A4;
+    border-left:4px solid #0055A4;
+    padding-left:8px;
+  }
+  .toolbar {
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px;
+    margin: 4px 0 10px 0;
+    justify-content:center;
+  }
+  .btn {
+    border:none;
+    border-radius:999px;
+    padding:7px 12px;
+    font-size:13px;
+    background:#0055A4;
+    color:white;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.2);
+    text-decoration:none;
+  }
+  .btn-secondary { background:#0f766e; }
+  .btn-danger { background:#b91c1c; }
+  .btn span.icon { font-size:15px; }
+  #app {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  .item {
+    background:#ffffff;
+    padding:10px;
+    border-radius:10px;
+    margin:6px 0;
+    box-shadow:0 1px 3px rgba(0,0,0,0.12);
+    font-size:14px;
+  }
+  .item-header { display:flex; align-items:flex-start; }
+  .item input[type=checkbox] {
+    width:20px;
+    height:20px;
+    margin-right:10px;
+  }
+  .label-text { flex:1; font-weight:bold; }
+  .info-text {
+    font-size:12px;
+    color:#4b5563;
+    margin-top:4px;
+  }
+  .note { display:none; margin-top:6px; }
+  .note-label {
+    font-size:12px;
+    margin-bottom:4px;
+    color:#374151;
+  }
+  .note textarea {
+    width:100%;
+    min-height:70px;
+    padding:6px;
+    border-radius:8px;
+    border:1px solid #cbd5f5;
+    font-size:13px;
+    box-sizing:border-box;
+  }
+  small.hint {
+    display:block;
+    font-size:11px;
+    color:#6b7280;
+    margin-top:2px;
+  }
+  @media (prefers-color-scheme: dark) {
+    body { background:#020617; color:#e5e7eb; }
+    h1 { color:#bfdbfe; }
+    h2 { color:#bfdbfe; border-left-color:#3b82f6; }
+    .item {
+      background:#020617;
+      box-shadow:0 1px 4px rgba(0,0,0,0.8);
+    }
+    .info-text { color:#9ca3af; }
+    .note textarea {
+      background:#020617;
+      color:#e5e7eb;
+      border-color:#374151;
+    }
+  }
+</style>
+</head>
+<body>
+<h1>🛡️ Motorpflege – Langzeit-Check</h1>
+
+<div class="toolbar">
+  <a class="btn" href="gwc_checkliste_main.html"><span class="icon">⬅️</span><span>Zur Haupt-Checkliste</span></a>
+  <button class="btn" onclick="exportPDF()"><span class="icon">📄</span><span>PDF / Drucken</span></button>
+  <button class="btn" onclick="backupData()"><span class="icon">☁️</span><span>Backup-Datei</span></button>
+  <button class="btn btn-secondary" onclick="restoreData()"><span class="icon">📂</span><span>Backup einspielen</span></button>
+  <button class="btn btn-danger" onclick="resetAll()"><span class="icon">🗑️</span><span>Alles zurücksetzen</span></button>
+</div>
+
+<div id="app"></div>
+
+<input type="file" id="backupFileInput" accept="application/json" style="display:none" />
+
+<script>
+(function(){
+  var sections = [
+    {
+      key: "polo",
+      title: "🛡️ Motorpflege – VW Polo 1.0 TSI (116 PS, BJ 2020)",
+      items: [
+        {
+          text: "Ölwechsel-Intervall bewusst kürzer wählen (z. B. alle 10–15.000 km)",
+          info: "Kürzere Intervalle halten das Öl sauberer, verringern Ablagerungen und schützen Turbo & Steuerkette. Gerade bei viel Kurzstrecke ist das deutlich schonender als bis zum maximalen Intervall zu warten."
+        },
+        {
+          text: "Immer Motoröl mit korrekter VW-Freigabe verwenden",
+          info: "Nur Öle mit passender VW-Norm (siehe Serviceheft/Betriebsanleitung) gewährleisten richtigen Verschleißschutz, Reinigungswirkung und Temperaturstabilität. Mischöl oder falsche Norm kann langfristig Schäden fördern."
+        },
+        {
+          text: "Motor nach Kaltstart behutsam fahren (keine hohen Drehzahlen)",
+          info: "Solange Öl und Kühlmittel kalt sind, ist der Schmierfilm dünner. Ruhiges Fahren und niedrige Drehzahlen in den ersten Minuten reduzieren Verschleiß an Kolben, Lagern und Turbo deutlich."
+        },
+        {
+          text: "Nach längerer Autobahnfahrt den Motor nicht direkt aus Volllast abstellen",
+          info: "Nach Vollgas ist der Turbo sehr heiß. Wenn man sofort abstellt, kann Öl im heißen Lader „verkoken“. Besser: einige Minuten entspannt nachrollen, damit alles Temperatur abbaut."
+        },
+        {
+          text: "Regelmäßig Luftfilter prüfen/wechseln",
+          info: "Ein sauberer Luftfilter schützt den Motor vor Schmutzpartikeln und sorgt dafür, dass der Turbo effizient arbeitet. Ein zugesetzter Filter erhöht Verbrauch und Belastung."
+        },
+        {
+          text: "Zündkerzenzustand im Blick behalten (sauberer Lauf, kein Ruckeln)",
+          info: "Verschlissene Zündkerzen können zu Fehlzündungen, Mehrverbrauch und erhöhten Abgastemperaturen führen. Rechtzeitiger Wechsel hält die Verbrennung sauber und schont Kat/OPF."
+        },
+        {
+          text: "Bei ungewöhnlichen Geräuschen oder Warnlampen frühzeitig Werkstatt aufsuchen",
+          info: "Je früher auf Klappern, Pfeifen oder Fehlermeldungen reagiert wird, desto eher lassen sich teure Folgeschäden vermeiden (z. B. Turbolader, Einspritzung)."
+        },
+        {
+          text: "Keine zweifelhaften Chiptunings oder Billig-Module am Motorsteuergerät verwenden",
+          info: "Unsaubere Leistungssteigerungen können Gemischaufbereitung, Abgastemperaturen und Bauteilbelastung massiv verschlechtern. Das erhöht das Risiko für Motorschäden und Probleme mit Abgasnachbehandlung."
+        },
+        {
+          text: "Reifendruck und Qualität der Reifen regelmäßig kontrollieren",
+          info: "Zu niedriger Reifendruck erhöht nicht nur den Verbrauch, sondern belastet Antriebsstrang und Bremsen stärker. Gute Reifen sorgen für ruhigeren Lauf und entlasten Fahrwerk und Antrieb."
+        },
+        {
+          text: "Den Polo nicht permanent nur auf Kurzstrecke bewegen – gelegentlich längere Fahrten einplanen",
+          info: "Bei Dauer-Kurzstrecke wird das Öl nie richtig warm, Kondensat und Kraftstoffeintrag bleiben im Motor. Ab und zu eine längere, gleichmäßige Fahrt hilft, Öl und Abgasanlage freizubekommen."
+        }
+      ]
+    },
+    {
+      key: "tiguan",
+      title: "🛡️ Motorpflege – VW Tiguan Allspace 2019, 245 PS TDI Biturbo",
+      items: [
+        {
+          text: "Ölwechsel-Intervall verkürzen (z. B. alle 10–15.000 km statt Longlife)",
+          info: "Der starke Biturbo-TDI belastet das Öl stark (hohe Drücke, hohe Temperaturen). Kürzere Intervalle reduzieren Ruß- und Alterungsbelastung und schonen Turbo, Lager und Kettentrieb."
+        },
+        {
+          text: "Nur Diesel nach EN-Norm tanken, gelegentlich Premium-Diesel nutzen",
+          info: "Hochwertiger Kraftstoff mit Additiven hält Injektoren sauberer und kann die Verbrennung optimieren. Gerade beim Biturbo-Diesel hilft das, Einspritzsystem und Partikelfilter sauber zu halten."
+        },
+        {
+          text: "Motor und Turbolader konsequent warmfahren",
+          info: "Die ersten 10–15 Minuten nur moderat beschleunigen, keine Vollgas-Orgien. So können Öl und Antriebstrang auf Temperatur kommen, bevor hoher Ladedruck anliegt."
+        },
+        {
+          text: "Nach hoher Last nicht sofort abstellen (z. B. nach Anhängerbetrieb oder Vollgasfahrten)",
+          info: "Nach starker Belastung sind beide Turbolader sehr heiß. Ein paar Minuten mit niedriger bis mittlerer Last fahren, bevor der Motor abgestellt wird, schützt vor Verkoken des Öls im Lader."
+        },
+        {
+          text: "DPF-Regeneration respektieren: keine Regeneration ständig abbrechen",
+          info: "Wenn die DPF-Regeneration läuft (erhöhte Drehzahl im Stand, höherer Verbrauch), möglichst weiterfahren, bis sie durch ist. Häufiges Abbrechen fördert Verstopfung und kann teure Probleme verursachen."
+        },
+        {
+          text: "Regelmäßig längere Fahrten mit konstanter Last einplanen",
+          info: "Der Biturbo-TDI mag es nicht, dauerhaft nur im Stadt- und Kurzstreckenbetrieb zu laufen. Gelegentliche längere Fahrten helfen, DPF und AGR-System frei zu halten."
+        },
+        {
+          text: "AdBlue-Füllstand im Blick behalten und rechtzeitig nachfüllen",
+          info: "Ein leerer AdBlue-Tank kann zu Startverweigerung und Fehlermeldungen führen. Sauberes SCR-System schützt vor teuren NOx-bezogenen Problemen und hält die Abgaswerte stabil."
+        },
+        {
+          text: "Ladedruckschläuche, Unterdruckleitungen und Kühlkreislauf prüfen lassen",
+          info: "Undichte Schläuche oder kleine Risse sorgen für Leistungsverlust, Notlauf und höhere Belastung der Lader. Regelmäßige Sichtkontrolle bei Inspektionen ist hier Gold wert."
+        },
+        {
+          text: "Bei DSG-Getriebe: Getriebeölwechsel nach Herstellervorgabe (oft ~60.000 km) einhalten",
+          info: "Das DSG-Getriebe ist ein Schlüsselbauteil. Frisches Getriebeöl sorgt für saubere Schaltvorgänge und reduziert Verschleiß an Kupplungen und Mechatronik – wichtig bei hohem Drehmoment des Biturbo."
+        },
+        {
+          text: "Bei Allrad (4Motion): Öl und Filter der Haldex-/Allradkupplung wechseln lassen",
+          info: "Der Allradantrieb braucht sauberes Öl für die Lamellenkupplung. Vernachlässigte Ölwechsel können zu Ruckeln, Fehlfunktionen oder teuren Schäden an der Hinterachse führen."
+        }
+      ]
+    }
+  ];
+
+  var storageOK = true;
+  try {
+    var t = "__gwc_test__";
+    window.localStorage.setItem(t, "1");
+    window.localStorage.removeItem(t);
+  } catch(e) {
+    storageOK = false;
+  }
+
+  function storageKey(id, suffix) {
+    return "gwc_" + id + "_" + suffix;
+  }
+
+  function loadState(key) {
+    if (!storageOK) return "";
+    try { return window.localStorage.getItem(key) || ""; } catch(e) { return ""; }
+  }
+
+  function saveState(key, value) {
+    if (!storageOK) return;
+    try { window.localStorage.setItem(key, value); } catch(e) {}
+  }
+
+  function buildUI() {
+    var app = document.getElementById("app");
+    if (!app) return;
+    app.innerHTML = "";
+
+    for (var s = 0; s < sections.length; s++) {
+      var sec = sections[s];
+      var h2 = document.createElement("h2");
+      h2.textContent = sec.title;
+      app.appendChild(h2);
+
+      for (var i = 0; i < sec.items.length; i++) {
+        var item = sec.items[i];
+        var idBase = sec.key + "_" + i;
+
+        var itemDiv = document.createElement("div");
+        itemDiv.className = "item";
+
+        var header = document.createElement("div");
+        header.className = "item-header";
+
+        var cb = document.createElement("input");
+        cb.type = "checkbox";
+        cb.id = idBase + "_cb";
+
+        var checkedVal = loadState(storageKey(idBase, "checked"));
+        if (checkedVal === "1") cb.checked = true;
+
+        var labelSpan = document.createElement("span");
+        labelSpan.className = "label-text";
+        labelSpan.textContent = item.text;
+
+        header.appendChild(cb);
+        header.appendChild(labelSpan);
+        itemDiv.appendChild(header);
+
+        var info = document.createElement("div");
+        info.className = "info-text";
+        info.textContent = item.info;
+        itemDiv.appendChild(info);
+
+        var noteDiv = document.createElement("div");
+        noteDiv.className = "note";
+
+        var noteLabel = document.createElement("div");
+        noteLabel.className = "note-label";
+        noteLabel.textContent = "Eigene Bemerkungen (z. B. Datum, Werkstatt, verwendetes Öl):";
+        noteDiv.appendChild(noteLabel);
+
+        var ta = document.createElement("textarea");
+        ta.id = idBase + "_note";
+        ta.value = loadState(storageKey(idBase, "note"));
+        noteDiv.appendChild(ta);
+
+        var hint = document.createElement("small");
+        hint.className = "hint";
+        hint.textContent = "Hinweis: Notizen werden lokal im Browser gespeichert.";
+        noteDiv.appendChild(hint);
+
+        itemDiv.appendChild(noteDiv);
+
+        if (cb.checked) noteDiv.style.display = "block";
+
+        (function(idBase, cb, noteDiv, ta){
+          cb.addEventListener("change", function(){
+            saveState(storageKey(idBase, "checked"), cb.checked ? "1" : "0");
+            noteDiv.style.display = cb.checked ? "block" : "none";
+          });
+
+          ta.addEventListener("input", function(){
+            saveState(storageKey(idBase, "note"), ta.value);
+          });
+        })(idBase, cb, noteDiv, ta);
+
+        app.appendChild(itemDiv);
+      }
+    }
+  }
+
+  window.exportPDF = function(){
+    window.print();
+  };
+
+  window.resetAll = function(){
+    if (!window.confirm("Wirklich alle Haken und Notizen auf der Motorpflege-Seite löschen?")) return;
+    if (storageOK) {
+      try {
+        for (var i = window.localStorage.length - 1; i >= 0; i--) {
+          var k = window.localStorage.key(i);
+          if (k && k.indexOf("gwc_polo_") === 0) window.localStorage.removeItem(k);
+          if (k && k.indexOf("gwc_tiguan_") === 0) window.localStorage.removeItem(k);
+        }
+      } catch(e) {}
+    }
+    buildUI();
+  };
+
+  window.backupData = function(){
+    var data = {};
+    if (storageOK) {
+      try {
+        for (var i = 0; i < window.localStorage.length; i++) {
+          var k = window.localStorage.key(i);
+          if (k && (k.indexOf("gwc_polo_") === 0 || k.indexOf("gwc_tiguan_") === 0)) {
+            data[k] = window.localStorage.getItem(k);
+          }
+        }
+      } catch(e) {}
+    }
+    var json = JSON.stringify(data, null, 2);
+    var blob = new Blob([json], {type:"application/json;charset=utf-8;"});
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    a.href = url;
+    a.download = "motorpflege-backup.json";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    alert("Backup-Datei gespeichert. Diese kannst du z. B. in iCloud Drive oder Google Drive ablegen.");
+  };
+
+  window.restoreData = function(){
+    var input = document.getElementById("backupFileInput");
+    input.value = "";
+    input.onchange = function(){
+      var file = input.files && input.files[0];
+      if (!file) return;
+      var reader = new FileReader();
+      reader.onload = function(ev){
+        try {
+          var obj = JSON.parse(ev.target.result);
+          if (storageOK) {
+            for (var k in obj) {
+              if (obj.hasOwnProperty(k) && (k.indexOf("gwc_polo_") === 0 || k.indexOf("gwc_tiguan_") === 0)) {
+                window.localStorage.setItem(k, obj[k]);
+              }
+            }
+          }
+          buildUI();
+          alert("Backup erfolgreich eingespielt.");
+        } catch(e) {
+          alert("Backup konnte nicht gelesen werden.");
+        }
+      };
+      reader.readAsText(file);
+    };
+    input.click();
+  };
+
+  function init(){
+    buildUI();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+})();
+</script>
+</body>
+</html>
