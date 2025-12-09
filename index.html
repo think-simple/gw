@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gebrauchtwagen-Check – VW Polo 1.0 TSI</title>
+<title>Motorpflege – VW Polo & VW Tiguan Allspace</title>
 <meta name="theme-color" content="#003366">
 <style>
   :root { color-scheme: light dark; }
@@ -46,6 +46,7 @@
     align-items:center;
     gap:6px;
     box-shadow:0 1px 3px rgba(0,0,0,0.2);
+    text-decoration:none;
   }
   .btn-secondary { background:#0f766e; }
   .btn-danger { background:#b91c1c; }
@@ -68,7 +69,12 @@
     height:20px;
     margin-right:10px;
   }
-  .label-text { flex:1; }
+  .label-text { flex:1; font-weight:bold; }
+  .info-text {
+    font-size:12px;
+    color:#4b5563;
+    margin-top:4px;
+  }
   .note { display:none; margin-top:6px; }
   .note-label {
     font-size:12px;
@@ -84,19 +90,6 @@
     font-size:13px;
     box-sizing:border-box;
   }
-  .photo { margin-top:6px; }
-  .photo-label {
-    font-size:12px;
-    margin-bottom:4px;
-    color:#374151;
-  }
-  .photo input[type=file] { font-size:12px; }
-  .photo-preview {
-    margin-top:4px;
-    max-width:100%;
-    max-height:140px;
-    border-radius:8px;
-  }
   small.hint {
     display:block;
     font-size:11px;
@@ -111,22 +104,21 @@
       background:#020617;
       box-shadow:0 1px 4px rgba(0,0,0,0.8);
     }
+    .info-text { color:#9ca3af; }
     .note textarea {
       background:#020617;
       color:#e5e7eb;
       border-color:#374151;
     }
-    .photo-preview { border:1px solid #1f2937; }
   }
 </style>
 </head>
 <body>
-<h1>Gebrauchtwagen-Check – VW Polo 1.0 TSI</h1>
+<h1>🛡️ Motorpflege – Langzeit-Check</h1>
 
 <div class="toolbar">
+  <a class="btn" href="gwc_checkliste_main.html"><span class="icon">⬅️</span><span>Zur Haupt-Checkliste</span></a>
   <button class="btn" onclick="exportPDF()"><span class="icon">📄</span><span>PDF / Drucken</span></button>
-  <button class="btn" onclick="exportCSV()"><span class="icon">📊</span><span>CSV exportieren</span></button>
-  <button class="btn btn-secondary" onclick="exportWhatsApp()"><span class="icon">📲</span><span>WhatsApp-Zusammenfassung</span></button>
   <button class="btn" onclick="backupData()"><span class="icon">☁️</span><span>Backup-Datei</span></button>
   <button class="btn btn-secondary" onclick="restoreData()"><span class="icon">📂</span><span>Backup einspielen</span></button>
   <button class="btn btn-danger" onclick="resetAll()"><span class="icon">🗑️</span><span>Alles zurücksetzen</span></button>
@@ -140,66 +132,95 @@
 (function(){
   var sections = [
     {
-      key: "vor",
-      title: "🚗 Vor der Probefahrt – Außen & Innen",
+      key: "polo",
+      title: "🛡️ Motorpflege – VW Polo 1.0 TSI (116 PS, BJ 2020)",
       items: [
-        "Karosserie: Dellen, Kratzer, Spaltmaße prüfen",
-        "LED-Scheinwerfer & Rückleuchten prüfen",
-        "Reifenprofil & Abrieb kontrollieren",
-        "Felgen auf Schäden prüfen",
-        "Sportfahrwerk / Dämpfer auf Ölspuren prüfen",
-        "Innenraum: Sitze, Lenkrad, Schalter prüfen",
-        "Rückfahrkamera & Display testen"
+        {
+          text: "Ölwechsel-Intervall bewusst kürzer wählen (z. B. alle 10–15.000 km)",
+          info: "Kürzere Intervalle halten das Öl sauberer, verringern Ablagerungen und schützen Turbo & Steuerkette. Gerade bei viel Kurzstrecke ist das deutlich schonender als bis zum maximalen Intervall zu warten."
+        },
+        {
+          text: "Immer Motoröl mit korrekter VW-Freigabe verwenden",
+          info: "Nur Öle mit passender VW-Norm (siehe Serviceheft/Betriebsanleitung) gewährleisten richtigen Verschleißschutz, Reinigungswirkung und Temperaturstabilität. Mischöl oder falsche Norm kann langfristig Schäden fördern."
+        },
+        {
+          text: "Motor nach Kaltstart behutsam fahren (keine hohen Drehzahlen)",
+          info: "Solange Öl und Kühlmittel kalt sind, ist der Schmierfilm dünner. Ruhiges Fahren und niedrige Drehzahlen in den ersten Minuten reduzieren Verschleiß an Kolben, Lagern und Turbo deutlich."
+        },
+        {
+          text: "Nach längerer Autobahnfahrt den Motor nicht direkt aus Volllast abstellen",
+          info: "Nach Vollgas ist der Turbo sehr heiß. Wenn man sofort abstellt, kann Öl im heißen Lader „verkoken“. Besser: einige Minuten entspannt nachrollen, damit alles Temperatur abbaut."
+        },
+        {
+          text: "Regelmäßig Luftfilter prüfen/wechseln",
+          info: "Ein sauberer Luftfilter schützt den Motor vor Schmutzpartikeln und sorgt dafür, dass der Turbo effizient arbeitet. Ein zugesetzter Filter erhöht Verbrauch und Belastung."
+        },
+        {
+          text: "Zündkerzenzustand im Blick behalten (sauberer Lauf, kein Ruckeln)",
+          info: "Verschlissene Zündkerzen können zu Fehlzündungen, Mehrverbrauch und erhöhten Abgastemperaturen führen. Rechtzeitiger Wechsel hält die Verbrennung sauber und schont Kat/OPF."
+        },
+        {
+          text: "Bei ungewöhnlichen Geräuschen oder Warnlampen frühzeitig Werkstatt aufsuchen",
+          info: "Je früher auf Klappern, Pfeifen oder Fehlermeldungen reagiert wird, desto eher lassen sich teure Folgeschäden vermeiden (z. B. Turbolader, Einspritzung)."
+        },
+        {
+          text: "Keine zweifelhaften Chiptunings oder Billig-Module am Motorsteuergerät verwenden",
+          info: "Unsaubere Leistungssteigerungen können Gemischaufbereitung, Abgastemperaturen und Bauteilbelastung massiv verschlechtern. Das erhöht das Risiko für Motorschäden und Probleme mit Abgasnachbehandlung."
+        },
+        {
+          text: "Reifendruck und Qualität der Reifen regelmäßig kontrollieren",
+          info: "Zu niedriger Reifendruck erhöht nicht nur den Verbrauch, sondern belastet Antriebsstrang und Bremsen stärker. Gute Reifen sorgen für ruhigeren Lauf und entlasten Fahrwerk und Antrieb."
+        },
+        {
+          text: "Den Polo nicht permanent nur auf Kurzstrecke bewegen – gelegentlich längere Fahrten einplanen",
+          info: "Bei Dauer-Kurzstrecke wird das Öl nie richtig warm, Kondensat und Kraftstoffeintrag bleiben im Motor. Ab und zu eine längere, gleichmäßige Fahrt hilft, Öl und Abgasanlage freizubekommen."
+        }
       ]
     },
     {
-      key: "motor",
-      title: "🛠️ Motorraum prüfen",
+      key: "tiguan",
+      title: "🛡️ Motorpflege – VW Tiguan Allspace 2019, 245 PS TDI Biturbo",
       items: [
-        "Ölstand & Ölqualität prüfen",
-        "Kühlmittelstand & Farbe prüfen",
-        "Bremsflüssigkeit hell und frisch?",
-        "Keine Öl-/Wasserlecks am Motor/Turbo",
-        "Schläuche & Leitungen ohne Risse",
-        "Keilriemen Zustand prüfen"
-      ]
-    },
-    {
-      key: "fahrt",
-      title: "🧭 Während der Probefahrt",
-      items: [
-        "Motorlauf ruhig – kein Ruckeln",
-        "Turbo sauber ohne laute Pfeifgeräusche",
-        "Schalten problemlos in alle Gänge",
-        "Kupplung ruckfrei, Schleifpunkt plausibel",
-        "Fahrwerk ohne Poltern oder Klappern",
-        "Lenkung präzise, kein Ziehen",
-        "Bremsen ohne Rubbeln oder Geräusche",
-        "Assistenzsysteme & PDC funktionieren"
-      ]
-    },
-    {
-      key: "nach",
-      title: "🔍 Nach der Probefahrt",
-      items: [
-        "Keine ungewöhnlichen Gerüche (Öl/Kühlmittel)",
-        "Motorgeräusche nach Abstellen prüfen",
-        "OBD-Fehlerspeicher auslesen",
-        "Servicehistorie vollständig & plausibel",
-        "Zündkerzen bei ~60.000 km erneuert?",
-        "Bremsflüssigkeit aktuell?"
-      ]
-    },
-    {
-      key: "deal",
-      title: "💶 Privatkauf & Verhandlung",
-      items: [
-        "Fahrzeugbrief/Zulassung prüfen",
-        "VIN mit Karosserie & Dokumenten vergleichen",
-        "Wartungsnachweise & Ölwechselintervalle prüfen",
-        "Unfallfreiheit schriftlich bestätigen lassen",
-        "Marktpreis vergleichen & realistisch einordnen",
-        "Mängel dokumentieren → Preisnachlass fordern"
+        {
+          text: "Ölwechsel-Intervall verkürzen (z. B. alle 10–15.000 km statt Longlife)",
+          info: "Der starke Biturbo-TDI belastet das Öl stark (hohe Drücke, hohe Temperaturen). Kürzere Intervalle reduzieren Ruß- und Alterungsbelastung und schonen Turbo, Lager und Kettentrieb."
+        },
+        {
+          text: "Nur Diesel nach EN-Norm tanken, gelegentlich Premium-Diesel nutzen",
+          info: "Hochwertiger Kraftstoff mit Additiven hält Injektoren sauberer und kann die Verbrennung optimieren. Gerade beim Biturbo-Diesel hilft das, Einspritzsystem und Partikelfilter sauber zu halten."
+        },
+        {
+          text: "Motor und Turbolader konsequent warmfahren",
+          info: "Die ersten 10–15 Minuten nur moderat beschleunigen, keine Vollgas-Orgien. So können Öl und Antriebstrang auf Temperatur kommen, bevor hoher Ladedruck anliegt."
+        },
+        {
+          text: "Nach hoher Last nicht sofort abstellen (z. B. nach Anhängerbetrieb oder Vollgasfahrten)",
+          info: "Nach starker Belastung sind beide Turbolader sehr heiß. Ein paar Minuten mit niedriger bis mittlerer Last fahren, bevor der Motor abgestellt wird, schützt vor Verkoken des Öls im Lader."
+        },
+        {
+          text: "DPF-Regeneration respektieren: keine Regeneration ständig abbrechen",
+          info: "Wenn die DPF-Regeneration läuft (erhöhte Drehzahl im Stand, höherer Verbrauch), möglichst weiterfahren, bis sie durch ist. Häufiges Abbrechen fördert Verstopfung und kann teure Probleme verursachen."
+        },
+        {
+          text: "Regelmäßig längere Fahrten mit konstanter Last einplanen",
+          info: "Der Biturbo-TDI mag es nicht, dauerhaft nur im Stadt- und Kurzstreckenbetrieb zu laufen. Gelegentliche längere Fahrten helfen, DPF und AGR-System frei zu halten."
+        },
+        {
+          text: "AdBlue-Füllstand im Blick behalten und rechtzeitig nachfüllen",
+          info: "Ein leerer AdBlue-Tank kann zu Startverweigerung und Fehlermeldungen führen. Sauberes SCR-System schützt vor teuren NOx-bezogenen Problemen und hält die Abgaswerte stabil."
+        },
+        {
+          text: "Ladedruckschläuche, Unterdruckleitungen und Kühlkreislauf prüfen lassen",
+          info: "Undichte Schläuche oder kleine Risse sorgen für Leistungsverlust, Notlauf und höhere Belastung der Lader. Regelmäßige Sichtkontrolle bei Inspektionen ist hier Gold wert."
+        },
+        {
+          text: "Bei DSG-Getriebe: Getriebeölwechsel nach Herstellervorgabe (oft ~60.000 km) einhalten",
+          info: "Das DSG-Getriebe ist ein Schlüsselbauteil. Frisches Getriebeöl sorgt für saubere Schaltvorgänge und reduziert Verschleiß an Kupplungen und Mechatronik – wichtig bei hohem Drehmoment des Biturbo."
+        },
+        {
+          text: "Bei Allrad (4Motion): Öl und Filter der Haldex-/Allradkupplung wechseln lassen",
+          info: "Der Allradantrieb braucht sauberes Öl für die Lamellenkupplung. Vernachlässigte Ölwechsel können zu Ruckeln, Fehlfunktionen oder teuren Schäden an der Hinterachse führen."
+        }
       ]
     }
   ];
@@ -239,7 +260,7 @@
       app.appendChild(h2);
 
       for (var i = 0; i < sec.items.length; i++) {
-        var itemText = sec.items[i];
+        var item = sec.items[i];
         var idBase = sec.key + "_" + i;
 
         var itemDiv = document.createElement("div");
@@ -257,18 +278,23 @@
 
         var labelSpan = document.createElement("span");
         labelSpan.className = "label-text";
-        labelSpan.textContent = itemText;
+        labelSpan.textContent = item.text;
 
         header.appendChild(cb);
         header.appendChild(labelSpan);
         itemDiv.appendChild(header);
+
+        var info = document.createElement("div");
+        info.className = "info-text";
+        info.textContent = item.info;
+        itemDiv.appendChild(info);
 
         var noteDiv = document.createElement("div");
         noteDiv.className = "note";
 
         var noteLabel = document.createElement("div");
         noteLabel.className = "note-label";
-        noteLabel.textContent = "Bemerkungen / Beobachtungen:";
+        noteLabel.textContent = "Eigene Bemerkungen (z. B. Datum, Werkstatt, verwendetes Öl):";
         noteDiv.appendChild(noteLabel);
 
         var ta = document.createElement("textarea");
@@ -276,42 +302,16 @@
         ta.value = loadState(storageKey(idBase, "note"));
         noteDiv.appendChild(ta);
 
-        var photoDiv = document.createElement("div");
-        photoDiv.className = "photo";
-
-        var photoLabel = document.createElement("div");
-        photoLabel.className = "photo-label";
-        photoLabel.textContent = "Foto (optional, z. B. Schaden):";
-        photoDiv.appendChild(photoLabel);
-
-        var fileInput = document.createElement("input");
-        fileInput.type = "file";
-        fileInput.accept = "image/*";
-        fileInput.id = idBase + "_file";
-        photoDiv.appendChild(fileInput);
-
         var hint = document.createElement("small");
         hint.className = "hint";
-        hint.textContent = "Hinweis: Fotos werden lokal im Browser gespeichert (evtl. Speicherbegrenzung).";
-        photoDiv.appendChild(hint);
+        hint.textContent = "Hinweis: Notizen werden lokal im Browser gespeichert.";
+        noteDiv.appendChild(hint);
 
-        var img = document.createElement("img");
-        img.className = "photo-preview";
-        img.id = idBase + "_img";
-        var savedPhoto = loadState(storageKey(idBase, "photo"));
-        if (savedPhoto) {
-          img.src = savedPhoto;
-        } else {
-          img.style.display = "none";
-        }
-        photoDiv.appendChild(img);
-
-        noteDiv.appendChild(photoDiv);
         itemDiv.appendChild(noteDiv);
 
         if (cb.checked) noteDiv.style.display = "block";
 
-        (function(idBase, cb, noteDiv, ta, fileInput, img){
+        (function(idBase, cb, noteDiv, ta){
           cb.addEventListener("change", function(){
             saveState(storageKey(idBase, "checked"), cb.checked ? "1" : "0");
             noteDiv.style.display = cb.checked ? "block" : "none";
@@ -320,25 +320,7 @@
           ta.addEventListener("input", function(){
             saveState(storageKey(idBase, "note"), ta.value);
           });
-
-          fileInput.addEventListener("change", function(){
-            var file = fileInput.files && fileInput.files[0];
-            if (!file) {
-              saveState(storageKey(idBase, "photo"), "");
-              img.style.display = "none";
-              img.removeAttribute("src");
-              return;
-            }
-            var reader = new FileReader();
-            reader.onload = function(ev) {
-              var dataUrl = ev.target.result;
-              img.src = dataUrl;
-              img.style.display = "block";
-              saveState(storageKey(idBase, "photo"), dataUrl);
-            };
-            reader.readAsDataURL(file);
-          });
-        })(idBase, cb, noteDiv, ta, fileInput, img);
+        })(idBase, cb, noteDiv, ta);
 
         app.appendChild(itemDiv);
       }
@@ -349,69 +331,14 @@
     window.print();
   };
 
-  window.exportCSV = function(){
-    var lines = ['"Bereich","Punkt","Erledigt","Bemerkung"'];
-    for (var s = 0; s < sections.length; s++) {
-      var sec = sections[s];
-      for (var i = 0; i < sec.items.length; i++) {
-        var itemText = sec.items[i];
-        var idBase = sec.key + "_" + i;
-        var cb = document.getElementById(idBase + "_cb");
-        var ta = document.getElementById(idBase + "_note");
-        var done = cb && cb.checked ? "Ja" : "Nein";
-        var note = ta ? ta.value.replace(/"/g,'""') : "";
-        var line = '"' + sec.title.replace(/"/g,'""') + '","' +
-                   itemText.replace(/"/g,'""') + '","' +
-                   done + '","' + note + '"';
-        lines.push(line);
-      }
-    }
-    var csv = lines.join("\n");
-    var blob = new Blob([csv], {type:"text/csv;charset=utf-8;"});
-    var url = URL.createObjectURL(blob);
-    var a = document.createElement("a");
-    a.href = url;
-    a.download = "gebrauchtwagen-check.csv";
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  };
-
-  window.exportWhatsApp = function(){
-    var text = "Gebrauchtwagen-Check – Zusammenfassung%n%n";
-    for (var s = 0; s < sections.length; s++) {
-      var sec = sections[s];
-      text += sec.title + "%n";
-      for (var i = 0; i < sec.items.length; i++) {
-        var itemText = sec.items[i];
-        var idBase = sec.key + "_" + i;
-        var cb = document.getElementById(idBase + "_cb");
-        var ta = document.getElementById(idBase + "_note");
-        if (cb && cb.checked) {
-          text += "✔ " + itemText;
-          if (ta && ta.value) {
-            text += " – " + ta.value;
-          }
-          text += "%n";
-        }
-      }
-      text += "%n";
-    }
-    var finalText = text.replace(/%n/g, "\n");
-    var url = "https://wa.me/?text=" + encodeURIComponent(finalText);
-    window.open(url, "_blank");
-  };
-
   window.resetAll = function(){
-    if (!window.confirm("Wirklich alle Haken, Notizen und Fotos löschen?")) return;
+    if (!window.confirm("Wirklich alle Haken und Notizen auf der Motorpflege-Seite löschen?")) return;
     if (storageOK) {
       try {
         for (var i = window.localStorage.length - 1; i >= 0; i--) {
           var k = window.localStorage.key(i);
-          if (k && k.indexOf("gwc_") === 0) {
-            window.localStorage.removeItem(k);
-          }
+          if (k && k.indexOf("gwc_polo_") === 0) window.localStorage.removeItem(k);
+          if (k && k.indexOf("gwc_tiguan_") === 0) window.localStorage.removeItem(k);
         }
       } catch(e) {}
     }
@@ -424,7 +351,7 @@
       try {
         for (var i = 0; i < window.localStorage.length; i++) {
           var k = window.localStorage.key(i);
-          if (k && k.indexOf("gwc_") === 0) {
+          if (k && (k.indexOf("gwc_polo_") === 0 || k.indexOf("gwc_tiguan_") === 0)) {
             data[k] = window.localStorage.getItem(k);
           }
         }
@@ -435,7 +362,7 @@
     var url = URL.createObjectURL(blob);
     var a = document.createElement("a");
     a.href = url;
-    a.download = "gebrauchtwagen-check-backup.json";
+    a.download = "motorpflege-backup.json";
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -455,7 +382,7 @@
           var obj = JSON.parse(ev.target.result);
           if (storageOK) {
             for (var k in obj) {
-              if (obj.hasOwnProperty(k) && k.indexOf("gwc_") === 0) {
+              if (obj.hasOwnProperty(k) && (k.indexOf("gwc_polo_") === 0 || k.indexOf("gwc_tiguan_") === 0)) {
                 window.localStorage.setItem(k, obj[k]);
               }
             }
